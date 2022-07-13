@@ -1,0 +1,64 @@
+@media only screen and (max-width: 346px) {
+  .btn {
+    margin-top: 20px;
+  }
+}
+
+.custom-button-detail-color {
+  padding: 0;
+  margin: 10px 10px;
+  width: 62px;
+  height: 38px;
+  border-radius: 10px;
+  border: none !important;
+}
+.custom-button-detail-color:hover {
+  opacity: 0.5;
+}
+.custom-button-detail-color-homepage {
+  padding: 0;
+  margin: 0 4px 10px 0;
+  width: 42px;
+  height: 24px;
+  border-radius: 10px;
+  border: none !important;
+}
+.custom-button-detail-color-detail {
+  padding: 0;
+  margin: 0 4px 10px 0;
+  width: 32px;
+  height: 22px;
+  border-radius: 10px;
+  border: none !important;
+}
+.custom-button-detail-color-homepage:hover {
+  opacity: 0.5;
+}
+.custom-button-detail-size {
+  padding: 0;
+  margin: 10px 10px;
+  width: 62px;
+  height: 38px;
+  border-radius: 10px;
+  border: none !important;
+}
+
+.ant-carousel .slick-next {
+  right: 10px;
+}
+.ant-carousel .slick-prev {
+  left: 10px;
+}
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next {
+  color: unset;
+  z-index: 1000;
+  font-size: 22px;
+}
+
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover,
+.ant-carousel .slick-prev:focus,
+.ant-carousel .slick-next:focus {
+  color: unset;
+}
