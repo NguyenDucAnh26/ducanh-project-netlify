@@ -49,37 +49,16 @@ import {
   sendCommentAction,
   getViewedProducts,
   getProductListUserAction,
+  getCategoryListAction,
 } from "../../../redux/actions";
 const { Panel } = Collapse;
 const { Title } = Typography;
-function SampleNextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block" }}
-      onClick={onClick}
-    />
-  );
-}
 
-function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block" }}
-      onClick={onClick}
-    />
-  );
-}
 const settings2 = {
   infinite: true,
   speed: 500,
   slidesToShow: 5,
   slidesToScroll: 2,
-  nextArrow: <SampleNextArrow style={{ color: "black" }} />,
-  prevArrow: <SamplePrevArrow style={{ color: "black" }} />,
   responsive: [
     {
       breakpoint: 1024,
@@ -181,7 +160,7 @@ function ProductDetailPage() {
 
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { state } = useLocation();
+  const { pathname, state } = useLocation();
 
   const { productDetail, viewedProducts } = useSelector(
     (state) => state.product
@@ -192,10 +171,16 @@ function ProductDetailPage() {
   const { commentList } = useSelector((state) => state.comment);
   const { userInfo } = useSelector((state) => state.user);
   const { colorList } = useSelector((state) => state.color);
+  const { categoryList } = useSelector((state) => state.category);
   const { productImagesList } = useSelector((state) => state.productImages);
+
+  const detail = categoryList.data.find(
+    (item) => item.id === productDetail.data.categoryId
+  );
 
   useEffect(() => {
     dispatch(getVariantListAction());
+    dispatch(getCategoryListAction());
     dispatch(getColorListAction({ limit: 100 }));
     dispatch(getProductImagesListAction());
     dispatch(getViewedProducts());
@@ -402,7 +387,7 @@ function ProductDetailPage() {
         </S.BreadcrumbContainer>
         <S.DetailMain>
           <S.ProductImgWrapper>
-            <Slider ref={sliderRef}>
+            <Slider className="slider-homepage" ref={sliderRef}>
               {productDetail.loading ? (
                 <Spin
                   indicator={
@@ -453,8 +438,6 @@ function ProductDetailPage() {
                   PriceProduct
                 )}
               </S.ProductPrice>
-              <S.ProductNewPrice>300.000đ</S.ProductNewPrice>
-              <S.ProductPriceSale>-30%</S.ProductPriceSale>
             </S.ProductPriceWarpper>
             <S.FormProduct>
               <Form>
@@ -522,6 +505,7 @@ function ProductDetailPage() {
                         setAmountSelected(value);
                       }}
                       defaultValue={1}
+                      min={1}
                     />
                     <Button
                       disabled={sizeSelected === "" ? true : false}
@@ -675,16 +659,8 @@ function ProductDetailPage() {
         <Divider />
         <S.AboutProduct>
           <Title level={2}>Chi tiết sản phẩm</Title>
-          <S.AboutContent>
-            Coolmate đã cho ra mắt rất nhiều sản phẩm thể thao với nhiều chất
-            liệu: Maxcool, Poly Quickdry,... Tiếp nối những sản phẩm thể thao
-            trước đó và đi theo xu hướng ngành may mặc "thời trang bền vững",
-            Coolmate ra mắt sản phẩm Quần thể thao nam 5 Inch Recycle thân thiện
-            với môi trường với thành phần chính là 100% sợi Recycle. Cùng tìm
-            hiểu vì sao chiếc quần thể thao Recycle này là sản phẩm mà chúng tôi
-            muốn gửi đến khách hàng.
-          </S.AboutContent>
-          <S.AboutImage src="https://mcdn.coolmate.me/image/April2022/5inch2.jpg" />
+          <S.AboutContent>{detail && detail.detailContent}</S.AboutContent>
+          <S.AboutImage src={detail && detail.urlDetail} />
         </S.AboutProduct>
         <Divider />
         <S.PreviewProduct>
@@ -729,7 +705,15 @@ function ProductDetailPage() {
                 }}
               >
                 bạn cần đăng nhập để đánh giá sản phẩm
-                <S.ClickLogIn onClick={() => navigate(ROUTES.LOGIN)}>
+                <S.ClickLogIn
+                  onClick={() =>
+                    navigate(ROUTES.LOGIN, {
+                      state: {
+                        prevPath: pathname,
+                      },
+                    })
+                  }
+                >
                   đăng nhập
                 </S.ClickLogIn>
               </div>
@@ -782,7 +766,7 @@ function ProductDetailPage() {
         <S.SuggestProductsContainer>
           <S.ProductSameCategory>
             <S.TitleProducts>Sản phẩm cùng loại</S.TitleProducts>
-            <Slider {...settings2}>
+            <Slider className="slider-homepage" {...settings2}>
               {productListUser.data &&
                 ProductListSameCategory.map((item, index) => {
                   if (ProductListSameCategory.length >= 5) {
@@ -801,7 +785,7 @@ function ProductDetailPage() {
             {viewedProducts.data.length !== 0 && (
               <S.TitleProducts>Sản phẩm đã xem gần đây</S.TitleProducts>
             )}
-            <Slider {...settings2}>
+            <Slider className="slider-homepage" {...settings2}>
               {viewedProducts.data.length >= 5 && renderViewedProducts}
             </Slider>
           </S.ProductsSave>

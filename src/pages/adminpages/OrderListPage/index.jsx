@@ -25,10 +25,7 @@ function OrderListPage() {
   }, []);
   const navigate = useNavigate();
   const { orderList } = useSelector((state) => state.order);
-  console.log(
-    "🚀 ~ file: index.jsx ~ line 28 ~ OrderListPage ~ orderList",
-    orderList
-  );
+
   const [deleteId, setDeleteId] = useState();
   const confirm = () => {
     dispatch(deleteOrderAction({ id: deleteId }));

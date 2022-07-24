@@ -18,12 +18,12 @@ export const DashboardData = styled.div`
 `;
 
 export const DashboardDataChart = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 20px;
   width: 50%;
   height: 100%;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background-color: #e7dbce;
+  border-radius: 8px;
   @media (max-width: 1072px) {
     width: 100%;
     margin-bottom: 10px;
@@ -64,12 +64,12 @@ export const ReportRow = styled.div`
   }
 `;
 export const ReportData = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   width: 50%;
   margin: 0 10px;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 8px;
   position: relative;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   @media (max-width: 1072px) {
     width: 90%;
@@ -97,7 +97,7 @@ export const ContentIcon = styled.div`
   background-color: #f0f0f0;
   color: black;
   padding: 8px 8px;
-  border-radius: 10px;
+  border-radius: 8px;
   @media (max-width: 1000px) {
     font-size: 20px;
   }

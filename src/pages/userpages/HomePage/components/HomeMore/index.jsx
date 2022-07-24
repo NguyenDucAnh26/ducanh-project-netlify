@@ -15,7 +15,6 @@ function HomeMore() {
           </S.MarP>
         </S.Marquee>
       </S.HomePageMoreCaption>
-
       <S.HomePageMoreImages>
         <Row gutter={[16, 24]}>
           <Col className="gutter-row" lg={12} sm={24} xs={24}>

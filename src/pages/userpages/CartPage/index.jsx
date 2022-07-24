@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as S from "./styles";
 import CartProductCard from "./CartProductCard";
+import TicketSale from "./TicketSale";
 import {
   ConfigProvider,
   Typography,
@@ -27,14 +28,15 @@ import cashPay from "../../../assets/img/cashpay.png";
 import {
   createOrderAction,
   getCartListAction,
-  getUserInfoAction,
   cleanCartAction,
+  getUserListAction,
+  updateUserInfoAction,
 } from "../../../redux/actions";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/routes";
+import Slider from "react-slick";
 
-const { Title } = Typography;
 const { Option } = Select;
 const apiProvinces = "https://ducanh-server.herokuapp.com/province";
 const apiDistrict = "https://ducanh-server.herokuapp.com/district";
@@ -50,47 +52,59 @@ const customizeRenderEmpty = () => (
         fontSize: 20,
       }}
     />
-    <p>Chọn thành phố/tỉnh trước bạn nhé</p>
+    <p>bạn cần nhập thông tin phía trước </p>
   </div>
 );
 
-const customizeRenderEmpty2 = () => (
-  <div
-    style={{
-      textAlign: "center",
-    }}
-  >
-    <SmileOutlined
-      style={{
-        fontSize: 20,
-      }}
-    />
-    <p>Chọn Quận/huyện trước bạn nhé </p>
-  </div>
-);
-
+const settings = {
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
 function CartPage() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { cartList } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.user);
 
   const [payment, setPayment] = useState("cash");
   const [province, setProvince] = useState([]);
-  const [provinceID, setProvinceID] = useState();
   const [district, setDistrict] = useState([]);
-  const [districtID, setDistrictID] = useState();
   const [commune, setCommune] = useState([]);
-  const [districtName, setDistrictName] = useState();
-  const [communeName, setCommuneName] = useState();
-  const [provinceName, setProvinceName] = useState();
-  // const [provinceInput, setProvinceInput] = useState();
-  // const [districtInput, setDistrictInput] = useState();
-  // const [communeInput, setCommuneInput] = useState();
-  const accessToken = localStorage.getItem("accessToken");
+  const [provinceID, setProvinceID] = useState();
+  const [districtID, setDistrictID] = useState();
+  const [communeID, setCommuneID] = useState();
 
+  const accessToken = localStorage.getItem("accessToken");
   const [changeBorderCart, setChangeBorderCart] = useState(false);
+  const [sale, setSale] = useState();
+  const [saleId, setSaleId] = useState();
+  const [pickSale, setPickSale] = useState();
+
   useEffect(() => {
     axios.get(apiProvinces).then(function(response) {
       const provinces = response.data;
@@ -105,10 +119,15 @@ function CartPage() {
       setCommune(communes);
     });
     dispatch(getCartListAction());
-    dispatch(getUserInfoAction());
+    dispatch(getUserListAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function handleClickSale(data, index) {
+    setSale(data.sale);
+    setSaleId(data.id);
+    setPickSale(index);
+  }
   function handleSubmitForm() {
     form.submit();
   }
@@ -118,16 +137,16 @@ function CartPage() {
       createOrderAction({
         data: {
           ...values,
-          province: provinceName,
-          district: districtName,
-          commune: communeName,
           payment: payment,
           creatAt: moment().format("DD/MM/YYYY , HH:mm"),
-          total: cartList.totalAmount,
+          total: totalCart,
           cartProducts: [...cartList.data],
           progress: "new",
           payStatus: "check",
           userId: accessToken ? userInfo.data.id : null,
+          province: provinceID ? provinceID : userInfo.data.province,
+          district: districtID ? districtID : userInfo.data.district,
+          commune: communeID ? communeID : userInfo.data.commune,
         },
       })
     );
@@ -136,6 +155,28 @@ function CartPage() {
       message: "Thanh toán thành công",
       description: "Cảm ơn đã mua hàng của chúng tôi",
     });
+
+    const SaleHaveUse =
+      saleId && userInfo.data.sales.find((item) => item.id === saleId);
+
+    const SaleHaveUseDecreaseAmount = {
+      ...SaleHaveUse,
+      amount: SaleHaveUse.amount - 1,
+    };
+    const SalesNotHaveUse =
+      saleId && userInfo.data.sales.filter((item) => item.id !== saleId);
+
+    const newSales = saleId && [...SalesNotHaveUse, SaleHaveUseDecreaseAmount];
+
+    dispatch(
+      updateUserInfoAction({
+        id: userInfo.data.id,
+        data: {
+          sales: newSales,
+        },
+      })
+    );
+    window.location.reload();
   }
 
   const renderProvince = province.map((item) => {
@@ -146,12 +187,16 @@ function CartPage() {
     );
   });
 
-  const districtFilter = district.filter(
-    (item) => item.idProvince === provinceID
+  const districtFilter = district.filter((item) =>
+    item.idProvince === userInfo.data.province
+      ? userInfo.data.province
+      : provinceID
   );
 
-  const communeFilter = commune.filter(
-    (item) => item.idDistrict === districtID
+  const communeFilter = commune.filter((item) =>
+    item.idDistrict === userInfo.data.district
+      ? userInfo.data.district
+      : districtID
   );
 
   const renderCommune = communeFilter.map((item) => {
@@ -184,189 +229,267 @@ function CartPage() {
     phone: userInfo.data.phone,
     email: userInfo.data.email,
     address: userInfo.data.address,
+    province: userInfo.data.province,
+    district: userInfo.data.district,
+    commune: userInfo.data.commune,
     note: "",
   };
   const shipCost = 25000;
-  const totalCart = cartList.totalAmount + shipCost;
+  const totalCart =
+    cartList.totalAmount +
+    shipCost -
+    (sale && cartList.data.length !== 0 ? sale : 0);
   return (
     <S.CartPage>
       <S.CartWarpper>
         <S.WrapperFlex>
           <S.InforContainer>
             <S.InfoHeadContainer>
-              <Title level={2}>Thông tin vận chuyển</Title>
+              <S.InfoTitle>Thông tin vận chuyển</S.InfoTitle>
               {!accessToken ? (
                 <S.InfoHeadContent>
                   Bạn đã có tài khoản? &nbsp;
-                  <S.HeadContentLink onClick={() => navigate(ROUTES.LOGIN)}>
+                  <S.HeadContentLink
+                    onClick={() =>
+                      navigate(ROUTES.LOGIN, {
+                        state: {
+                          prevPath: pathname,
+                        },
+                      })
+                    }
+                  >
                     Đăng nhập ngay
                   </S.HeadContentLink>
                 </S.InfoHeadContent>
-              ) : (
-                `hello ${userInfo.data.fullName} :))`
-              )}
+              ) : null}
             </S.InfoHeadContainer>
             <S.InfoFormContainer>
-              <Form
-                onFinish={(values) => handleCreateOrder(values)}
-                form={form}
-                initialValues={!accessToken ? initialValues : initialValuesUser}
-              >
-                <S.FromFlex>
-                  <S.FlexItem>
-                    <Form.Item name="name">
-                      <Input
-                        className="input-payment-cart"
-                        placeholder="Họ tên"
-                      />
-                    </Form.Item>
-                  </S.FlexItem>
-
-                  <S.FlexItem>
-                    <Form.Item name="phone">
-                      <Input
-                        className="input-payment-cart"
-                        placeholder="Số điện thoại"
-                      />
-                    </Form.Item>
-                  </S.FlexItem>
-                </S.FromFlex>
-                <Form.Item name="email">
-                  <Input className="input-payment-cart" placeholder="Email" />
-                </Form.Item>
-                <Form.Item name="address">
-                  <Input
-                    className="input-payment-cart"
-                    placeholder="Địa chỉ (Ví dụ: 02 Lương Thế Vinh,Phường An Hải Đông)"
-                  />
-                </Form.Item>
-                <S.FromFlexSelect>
-                  <S.FlexItemSelect>
-                    <Form.Item>
-                      <Select
-                        placeholder="Thành phố/tỉnh"
-                        className="select-payment-cart"
-                        onChange={(value) => {
-                          setProvinceName(
-                            province.filter(
-                              (item) => item.idProvince === value
-                            )[0].name
-                          );
-                          setProvinceID(value);
-                        }}
-                      >
-                        {renderProvince}
-                      </Select>
-                    </Form.Item>
-                  </S.FlexItemSelect>
-                  <S.FlexItemSelect>
-                    <Form.Item>
-                      <ConfigProvider renderEmpty={customizeRenderEmpty}>
-                        <Select
-                          onChange={(value) => {
-                            setDistrictName(
-                              district.filter(
-                                (item) => item.idDistrict === value
-                              )[0].name
-                            );
-                            setDistrictID(value);
-                          }}
-                          placeholder="Quận/huyện"
-                          className="select-payment-cart"
-                        >
-                          {renderDistrict}
-                        </Select>
-                      </ConfigProvider>
-                    </Form.Item>
-                  </S.FlexItemSelect>
-                  <S.FlexItemSelect>
-                    <Form.Item>
-                      <ConfigProvider renderEmpty={customizeRenderEmpty2}>
-                        <Select
-                          onChange={(value) => {
-                            setCommuneName(
-                              commune.filter(
-                                (item) => item.idCommune === value
-                              )[0].name
-                            );
-                          }}
-                          placeholder="Phường/xã"
-                          className="select-payment-cart"
-                        >
-                          {renderCommune}
-                        </Select>
-                      </ConfigProvider>
-                    </Form.Item>
-                  </S.FlexItemSelect>
-                </S.FromFlexSelect>
-                <Form.Item name="note">
-                  <Input
-                    className="input-payment-cart"
-                    placeholder="Ghi chú (ví dụ: giao giờ hành chính)"
-                  />
-                </Form.Item>
-                <Title level={2}>Hình thức thanh toán</Title>
-                <Form.Item
-                  styles={{
-                    width: "100%",
-                  }}
+              <ConfigProvider renderEmpty={customizeRenderEmpty}>
+                <Form
+                  onFinish={(values) => handleCreateOrder(values)}
+                  form={form}
+                  initialValues={
+                    !accessToken ? initialValues : initialValuesUser
+                  }
                 >
-                  <Radio.Group
-                    defaultValue="cash"
-                    onChange={(e) => setPayment(e.target.value)}
-                    className="radio-group-pay-cart"
+                  <S.FromFlex>
+                    <S.FlexItem>
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message: "họ tên là bắt buộc!",
+                          },
+                        ]}
+                        name="name"
+                      >
+                        <Input
+                          className="input-payment-cart"
+                          placeholder="Họ tên"
+                        />
+                      </Form.Item>
+                    </S.FlexItem>
+
+                    <S.FlexItem>
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message: "Phone là bắt buộc!",
+                          },
+                        ]}
+                        name="phone"
+                      >
+                        <Input
+                          className="input-payment-cart"
+                          placeholder="Số điện thoại"
+                        />
+                      </Form.Item>
+                    </S.FlexItem>
+                  </S.FromFlex>
+                  <Form.Item
+                    rules={[
+                      {
+                        required: true,
+                        message: "Email là bắt buộc!",
+                      },
+                    ]}
+                    name="email"
+                  >
+                    <Input className="input-payment-cart" placeholder="Email" />
+                  </Form.Item>
+                  <Form.Item
+                    rules={[
+                      {
+                        required: true,
+                        message: "Địa chỉ là bắt buộc!",
+                      },
+                    ]}
+                    name="address"
+                  >
+                    <Input
+                      className="input-payment-cart"
+                      placeholder="Địa chỉ (Ví dụ: 02 Lương Thế Vinh,Phường An Hải Đông)"
+                    />
+                  </Form.Item>
+                  <S.FromFlexSelect>
+                    <S.FlexItemSelect>
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message: "vui lòng chọn TP/tỉnh!",
+                          },
+                        ]}
+                        name="province"
+                      >
+                        <Select
+                          placeholder="Thành phố/tỉnh"
+                          className="select-payment-cart"
+                          onChange={(value) => {
+                            setProvinceID(value);
+                          }}
+                        >
+                          {renderProvince}
+                        </Select>
+                      </Form.Item>
+                    </S.FlexItemSelect>
+                    <S.FlexItemSelect>
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message: "vui lòng chọn quận/huyện!",
+                          },
+                        ]}
+                        name="district"
+                      >
+                        {userInfo.data.district ? (
+                          <Select
+                            onChange={(value) => {
+                              setDistrictID(value);
+                            }}
+                            placeholder="Quận/huyện"
+                            className="select-payment-cart"
+                          >
+                            {renderDistrict}
+                          </Select>
+                        ) : (
+                          <Select
+                            onChange={(value) => {
+                              setDistrictID(value);
+                            }}
+                            placeholder="Quận/huyện"
+                            className="select-payment-cart"
+                          >
+                            {renderDistrict}
+                          </Select>
+                        )}
+                      </Form.Item>
+                    </S.FlexItemSelect>
+                    <S.FlexItemSelect>
+                      <Form.Item
+                        rules={[
+                          {
+                            required: true,
+                            message: "vui lòng chọn phường/xã!",
+                          },
+                        ]}
+                        name="commune"
+                      >
+                        {userInfo.data.commune ? (
+                          <Select
+                            onChange={(value) => {
+                              setCommuneID(value);
+                            }}
+                            placeholder="Phường/xã"
+                            className="select-payment-cart"
+                          >
+                            {renderCommune}
+                          </Select>
+                        ) : (
+                          <Select
+                            onChange={(value) => {
+                              setCommuneID(value);
+                            }}
+                            placeholder="Phường/xã"
+                            className="select-payment-cart"
+                          >
+                            {renderCommune}
+                          </Select>
+                        )}
+                      </Form.Item>
+                    </S.FlexItemSelect>
+                  </S.FromFlexSelect>
+                  <Form.Item name="note">
+                    <Input
+                      className="input-payment-cart"
+                      placeholder="Ghi chú (ví dụ: giao giờ hành chính)"
+                    />
+                  </Form.Item>
+                  <S.InfoTitle>Hình thức thanh toán</S.InfoTitle>
+                  <Form.Item
                     styles={{
                       width: "100%",
                     }}
                   >
-                    <S.FlexCollum>
-                      <S.FlexCol>
-                        <Radio className="radio-pay-cart" value="cash">
-                          <S.PayIcon src={cashPay} alt="coolmate" /> Thanh toán
-                          khi nhận hàng
-                        </Radio>
-                      </S.FlexCol>
-                      <S.FlexCol>
-                        <Radio className="radio-pay-cart" value="momopay">
-                          <S.PayIcon
-                            src="https://www.coolmate.me/images/momo-icon.png"
-                            alt="coolmate"
-                          />
-                          MOMO
-                        </Radio>
-                      </S.FlexCol>
-                      <S.FlexCol>
-                        <Radio className="radio-pay-cart" value="zalopay">
-                          <S.PayIcon
-                            src="https://www.coolmate.me/images/logo-zalopay.svg"
-                            alt="coolmate"
-                          />
-                          Ví điện tử ZaloPay
-                        </Radio>
-                      </S.FlexCol>
-                    </S.FlexCollum>
-                  </Radio.Group>
-                  <S.BtnWrap>
-                    <Button
-                      onClick={() => handleSubmitForm()}
-                      className={
-                        cartList.data.length === 0
-                          ? "btn-no-payment-cart"
-                          : "btn-payment-cart"
-                      }
-                      size="large"
+                    <Radio.Group
+                      defaultValue="cash"
+                      onChange={(e) => setPayment(e.target.value)}
+                      className="radio-group-pay-cart"
+                      styles={{
+                        width: "100%",
+                      }}
                     >
-                      Thanh toán
-                    </Button>
-                  </S.BtnWrap>
-                </Form.Item>
-              </Form>
+                      <S.FlexCollum>
+                        <S.FlexCol>
+                          <Radio className="radio-pay-cart" value="cash">
+                            <S.PayIcon src={cashPay} alt="coolmate" /> Thanh
+                            toán khi nhận hàng
+                          </Radio>
+                        </S.FlexCol>
+                        <S.FlexCol>
+                          <Radio className="radio-pay-cart" value="momopay">
+                            <S.PayIcon
+                              src="https://www.coolmate.me/images/momo-icon.png"
+                              alt="coolmate"
+                            />
+                            MOMO
+                          </Radio>
+                        </S.FlexCol>
+                        <S.FlexCol>
+                          <Radio className="radio-pay-cart" value="zalopay">
+                            <S.PayIcon
+                              src="https://www.coolmate.me/images/logo-zalopay.svg"
+                              alt="coolmate"
+                            />
+                            Ví điện tử ZaloPay
+                          </Radio>
+                        </S.FlexCol>
+                      </S.FlexCollum>
+                    </Radio.Group>
+                    <S.BtnWrap>
+                      <Button
+                        onClick={() => handleSubmitForm()}
+                        className={
+                          cartList.data.length === 0
+                            ? "btn-no-payment-cart"
+                            : "btn-payment-cart"
+                        }
+                        size="large"
+                      >
+                        Thanh toán
+                      </Button>
+                    </S.BtnWrap>
+                  </Form.Item>
+                </Form>
+              </ConfigProvider>
             </S.InfoFormContainer>
           </S.InforContainer>
           <S.CartContainer>
             <S.SideCart changeBorderCart={changeBorderCart}>
               <S.CartHeading>
-                <Title level={2}>Giỏ hàng</Title>
+                <S.InfoTitle>Giỏ hàng</S.InfoTitle>
                 <Popconfirm
                   onCancel={() => setChangeBorderCart(false)}
                   onConfirm={() => {
@@ -389,12 +512,29 @@ function CartPage() {
                   </S.CleanIcon>
                 </Popconfirm>
               </S.CartHeading>
-
+              <Slider className="slider-homepage" {...settings}>
+                {userInfo.data.sales
+                  ? userInfo.data.sales.map((item, index) => {
+                      if (item.amount > 0) {
+                        return (
+                          <TicketSale
+                            pickSale={pickSale}
+                            data={item}
+                            index={index}
+                            key={item.id}
+                            handleClickSale={handleClickSale}
+                          />
+                        );
+                      }
+                      return null;
+                    })
+                  : null}
+              </Slider>
               <Divider />
               <S.BillFlex>
                 <S.TitleCol>
                   <S.TitleRow>Tạm tính</S.TitleRow>
-                  <S.TitleRow>Giảm giá</S.TitleRow>
+                  <S.TitleRow>Giảm giá </S.TitleRow>
                   <S.TitleRow>Phí giao hàng</S.TitleRow>
                 </S.TitleCol>
                 <S.CalCol>
@@ -404,7 +544,14 @@ function CartPage() {
                       currency: "VND",
                     })}
                   </S.CalRow>
-                  <S.CalRow>0₫</S.CalRow>
+                  <S.CalRow>
+                    {sale && cartList.data.length !== 0
+                      ? sale.toLocaleString("vi", {
+                          style: "currency",
+                          currency: "VND",
+                        })
+                      : "0 ₫"}
+                  </S.CalRow>
                   <S.CalRow>
                     {shipCost.toLocaleString("vi", {
                       style: "currency",
@@ -431,9 +578,9 @@ function CartPage() {
               <S.ProductsCart>{renderCartCard}</S.ProductsCart>
               {cartList.data.length === 0 ? (
                 <S.NotifyNoCart>
-                  <Title style={{ color: "#aaa" }} level={3}>
+                  <S.NotifyCartTtile>
                     Giỏ hàng của bạn hiện đang trống
-                  </Title>
+                  </S.NotifyCartTtile>
                   <S.NotifyNoCartIcon>
                     <ShoppingCartOutlined />
                   </S.NotifyNoCartIcon>

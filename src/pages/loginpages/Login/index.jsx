@@ -4,13 +4,15 @@ import { Typography, Form, Input, Button, Divider, Checkbox } from "antd";
 import { FacebookFilled, GooglePlusOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { loginAction } from "../../../redux/actions";
 import { ROUTES } from "../../../constants/routes";
 
 const { Title } = Typography;
 function Login() {
   const [loginForm] = Form.useForm();
+  const { pathname } = useLocation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loginData } = useSelector((state) => state.user);
@@ -40,7 +42,11 @@ function Login() {
         callback: {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
           goToHome: () => {
-            navigate(ROUTES.USER.HOME);
+            navigate(ROUTES.LOGIN, {
+              state: {
+                prevPath: pathname,
+              },
+            });
             window.location.reload();
           },
         },

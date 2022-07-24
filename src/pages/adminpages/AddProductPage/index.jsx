@@ -73,7 +73,7 @@ function AddProductPage() {
                 },
               ]}
             >
-              <Input placeholder="product name..." />
+              <Input className="input-admin" placeholder="product name..." />
             </Form.Item>
             <Form.Item
               rules={[
@@ -91,17 +91,17 @@ function AddProductPage() {
               label="Price"
             >
               <InputNumber
+                className="input-admin"
                 placeholder=" product price..."
                 prefix="đ"
-                style={{
-                  width: "200px",
-                }}
+                min={1}
               />
             </Form.Item>
             <Form.Item name="discount" label="Discount">
               <InputNumber
+                className="input-admin"
                 disabled
-                min={0}
+                min={1}
                 max={100}
                 formatter={(value) => `${value}%`}
                 parser={(value) => value.replace("%", "")}

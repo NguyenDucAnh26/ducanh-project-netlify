@@ -134,7 +134,7 @@ function ProductCardDetail({ data }) {
 
   return (
     <Card
-      className="product-card-collection"
+      className="product-card-collection product-card-detail-more"
       style={{
         minHeight: "522px",
         width: 240,

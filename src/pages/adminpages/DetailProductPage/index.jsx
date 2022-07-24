@@ -251,10 +251,16 @@ function DetailProductPage() {
                 </Select>
               </Form.Item>
               <Form.Item name="quantity" label="Quantity">
-                <InputNumber />
+                <InputNumber min={1} className="input-admin" />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  style={{
+                    backgroundColor: "#e7dbce",
+                    borderRadius: "5px",
+                  }}
+                  htmlType="submit"
+                >
                   Complete
                 </Button>
               </Form.Item>
@@ -273,7 +279,7 @@ function DetailProductPage() {
               layout="vertical"
             >
               <Form.Item name="url" label="Image Product Link">
-                <Input />
+                <Input className="input-admin" />
               </Form.Item>
               <Form.Item name="color" label="Color">
                 <Select>
@@ -288,7 +294,13 @@ function DetailProductPage() {
                 </Select>
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  style={{
+                    backgroundColor: "#e7dbce",
+                    borderRadius: "5px",
+                  }}
+                  htmlType="submit"
+                >
                   Upload Image Link
                 </Button>
               </Form.Item>
@@ -307,7 +319,7 @@ function DetailProductPage() {
               layout="vertical"
             >
               <Form.Item name="url" label="Product color link">
-                <Input />
+                <Input className="input-admin" />
               </Form.Item>
               <Form.Item name="color" label="Color">
                 <Select>
@@ -322,7 +334,13 @@ function DetailProductPage() {
                 </Select>
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  style={{
+                    backgroundColor: "#e7dbce",
+                    borderRadius: "5px",
+                  }}
+                  htmlType="submit"
+                >
                   Upload Color Link
                 </Button>
               </Form.Item>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const HomeContentContainer = styled.div`
   position: relative;
   margin: 0 auto;
-  border-radius: 10px;
+  border-radius: 8px;
   max-width: 1200px;
   padding-top: 30%;
   &:before {
@@ -16,12 +16,12 @@ export const HomeContentContainer = styled.div`
     background: rgba(0, 0, 0, 0.4);
     opacity: 0.55;
     z-index: 1;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 `;
 export const VideoWrapper = styled.div`
   height: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
   position: absolute;
   top: 0;
   left: 0;
@@ -30,7 +30,7 @@ export const VideoWrapper = styled.div`
 `;
 export const Video = styled.video`
   height: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -105,7 +105,7 @@ export const LinkBtn = styled.button`
   background-color: black;
   color: #fff;
   border: none;
-  padding: 10px 50px;
+  padding: 10px 30px;
   border-radius: 30px;
   &:hover {
     background-color: #ccc;
@@ -128,7 +128,7 @@ export const LinkBtnSmaillScreen = styled.button`
   background-color: black;
   color: #fff;
   border: none;
-  padding: 10px 10px;
+  padding: 6px 6px;
   border-radius: 5px;
   &:hover {
     background-color: #ccc;

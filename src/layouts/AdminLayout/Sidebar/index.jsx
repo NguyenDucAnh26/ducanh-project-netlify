@@ -64,7 +64,7 @@ function Sidebar() {
           display: "flex",
           height: "64px",
           marginBottom: "32px",
-          background: "#fff",
+          background: "#e7dbce",
           alignItems: "center",
         }}
       >

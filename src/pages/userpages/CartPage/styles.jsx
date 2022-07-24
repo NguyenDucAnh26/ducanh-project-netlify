@@ -54,10 +54,16 @@ export const FlexItem = styled.div`
 export const FromFlexSelect = styled.div`
   display: flex;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const FlexItemSelect = styled.div`
   width: 30%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 export const PayIcon = styled.img`
   width: 40px;
@@ -93,9 +99,9 @@ export const CartContainer = styled.div`
   }
 `;
 export const SideCart = styled.div`
-  border-radius: 14px;
+  border-radius: 8px;
   border: ${({ changeBorderCart }) =>
-    changeBorderCart ? "1px solid #ff2459" : "1px solid black"};
+    changeBorderCart ? "1px solid #ff2459" : "1px solid #aaa"};
   width: 100%;
   height: 100%;
   padding: 10px 40px;
@@ -142,4 +148,25 @@ export const NotifyNoCart = styled.div`
 export const NotifyNoCartIcon = styled.div`
   font-size: 22px;
   color: #aaa;
+`;
+
+export const NotifyCartTtile = styled.h3`
+  font-size: 24px;
+  color: #aaa;
+  line-height: 40px;
+  font-weight: 500;
+  @media (max-width: 500px) {
+    line-height: 24px;
+    font-size: 16px;
+  }
+`;
+export const InfoTitle = styled.h3`
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.35;
+  @media (max-width: 500px) {
+    font-size: 24px;
+  }
 `;

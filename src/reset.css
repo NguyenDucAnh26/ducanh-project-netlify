@@ -2,6 +2,14 @@
    v2.0-modified | 20110126
    License: none (public domain)
 */
+.btn-update-account {
+  border-radius: 50px;
+}
+.input-admin {
+  border-radius: 50px;
+  height: 40px;
+  overflow: hidden;
+}
 .slider-homepage button {
   display: none !important;
 }
@@ -61,10 +69,10 @@
   height: 90%;
   cursor: pointer;
 }
-*/ .card-account-order {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+.card-account-order {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px, rgb(51, 51, 51) 0px 0px 0px 1px;
   border-radius: 20px;
-  margin: 20px 0;
+  margin: 30px 0;
 }
 .btn-comment {
   border-radius: 20px;
@@ -180,6 +188,13 @@
   color: #fff;
   font-weight: 500;
   font-size: 18px;
+}
+
+/* detail card */
+@media (max-width: 500px) {
+  .product-card-detail-more {
+    min-height: 500px !important;
+  }
 }
 
 .loader-line-wrap {

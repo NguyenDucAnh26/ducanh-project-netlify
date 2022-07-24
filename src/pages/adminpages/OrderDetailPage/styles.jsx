@@ -71,8 +71,9 @@ export const ImgWrapper = styled.div`
 `;
 export const AddProduct = styled.button`
   padding: 4px;
-  background-color: #0a0a0a;
-  color: #f0f0f0;
+  background-color: #e7dbce;
+  color: #151515;
+  border: 1px solid #151515;
   border-radius: 5px;
   margin-bottom: 20px;
   float: right;

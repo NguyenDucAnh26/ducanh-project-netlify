@@ -38,9 +38,6 @@ export const HeaderBar = styled.div`
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
   transition: all 0.3s;
-  &:hover {
-    background-color: #ff2459;
-  }
 `;
 export const HeaderInner = styled.div`
   display: flex;
@@ -186,7 +183,7 @@ export const UserMenu = styled.div`
   transition: all 0.35s;
   position: absolute;
   background: white;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px, rgb(51, 51, 51) 0px 0px 0px 1px;
   border-radius: 20px;
   height: 140px;
   width: 230px;

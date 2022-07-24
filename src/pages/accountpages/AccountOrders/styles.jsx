@@ -154,3 +154,15 @@ export const CardFlex = styled.div`
   height: 100px;
   display: flex;
 `;
+
+export const BtnDelete = styled.button`
+  font-size: 12px;
+  background-color: black;
+  color: white;
+  border-radius: 2px;
+  font-weight: 500;
+  margin-right: 6px;
+  &:hover {
+    opacity: 0.6;
+  }
+`;

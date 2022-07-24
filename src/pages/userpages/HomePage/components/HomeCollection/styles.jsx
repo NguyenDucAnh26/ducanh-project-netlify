@@ -9,15 +9,15 @@ export const CollectionWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
 `;
 export const CollectionThumbnail = styled.div`
   position: relative;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
 `;
 export const CollectionThumbnailImage = styled.img`
-  border-radius: 16px;
+  border-radius: 8px;
   width: 100%;
   -o-object-fit: cover;
   object-fit: cover;
@@ -41,7 +41,7 @@ export const CollectionThumbnailTitle = styled.h3`
   justify-content: center;
   align-items: center;
   height: 40px;
-  border-radius: 16px;
+  border-radius: 8px;
   transition: all 0.3s;
   font-weight: 500;
 `;

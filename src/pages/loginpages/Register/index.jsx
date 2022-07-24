@@ -36,6 +36,32 @@ function Register() {
           password: values.password,
           role: "user",
           creatAt: moment().format("DD/MM/YYYY , HH:mm"),
+          sales: [
+            {
+              id: 1,
+              name: "ALONE",
+              sale: 20000,
+              amount: 4,
+            },
+            {
+              id: 2,
+              name: "FA",
+              sale: 30000,
+              amount: 3,
+            },
+            {
+              id: 3,
+              name: "MEN",
+              sale: 35000,
+              amount: 2,
+            },
+            {
+              id: 4,
+              name: "YOLO",
+              sale: 40000,
+              amount: 1,
+            },
+          ],
         },
         callback: {
           goToLogin: () => navigate(ROUTES.LOGIN),

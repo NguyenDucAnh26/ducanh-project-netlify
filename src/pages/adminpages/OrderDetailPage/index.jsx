@@ -10,12 +10,34 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ROUTES } from "../../../constants/routes";
+import axios from "axios";
 
 const { Option } = Select;
+const apiProvinces = "https://ducanh-server.herokuapp.com/province";
+const apiDistrict = "https://ducanh-server.herokuapp.com/district";
+const apiCommune = "https://ducanh-server.herokuapp.com/commune";
 function OrderDetailPage() {
+  const [province, setProvince] = useState([]);
+  const [district, setDistrict] = useState([]);
+  const [commune, setCommune] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
+  useEffect(() => {
+    axios.get(apiProvinces).then(function(response) {
+      const provinces = response.data;
+      setProvince(provinces);
+    });
+    axios.get(apiDistrict).then(function(response) {
+      const districts = response.data;
+      setDistrict(districts);
+    });
+    axios.get(apiCommune).then(function(response) {
+      const communes = response.data;
+      setCommune(communes);
+    });
+  }, []);
+
   useEffect(() => {
     dispatch(getOrderDetailAction({ id: id }));
   }, [id]);
@@ -37,6 +59,16 @@ function OrderDetailPage() {
       message: "Update success",
     });
   }
+  const provineName = province.find(
+    (item) => item.idProvince === orderDetail.data.province
+  );
+  const districtName = district.find(
+    (item) => item.idDistrict === orderDetail.data.district
+  );
+  const communeName = commune.find(
+    (item) => item.idCommune === orderDetail.data.commune
+  );
+
   return (
     <S.OrderContainer>
       <S.OrderWrapper>
@@ -67,13 +99,13 @@ function OrderDetailPage() {
               <span>{orderDetail.data.address}</span>
               <br />
               <S.InfoHead>Provine: </S.InfoHead>
-              <span>{orderDetail.data.province}</span>
+              <span>{provineName && provineName.name}</span>
               <br />
               <S.InfoHead>District: </S.InfoHead>
-              <span> {orderDetail.data.district}</span>
+              <span> {districtName && districtName.name}</span>
               <br />
               <S.InfoHead>Commune: </S.InfoHead>
-              <span>{orderDetail.data.commune}</span>
+              <span>{communeName && communeName.name}</span>
               <br />
             </S.InfoRight>
           </S.Info>

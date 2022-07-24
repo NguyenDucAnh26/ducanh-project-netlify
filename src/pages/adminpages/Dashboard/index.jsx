@@ -129,7 +129,7 @@ function Dashboard() {
             <S.ReportRow>
               <S.ReportData
                 style={{
-                  backgroundColor: "#151515",
+                  backgroundColor: "#e7dbce",
                   marginBottom: "20px",
                 }}
               >

@@ -6,7 +6,16 @@ function HomeContent() {
   const navigate = useNavigate();
   return (
     <S.HomeContentContainer>
-      <S.LinkBtnSmaillScreen>Mua ngay</S.LinkBtnSmaillScreen>
+      <S.LinkBtnSmaillScreen
+        onClick={() => {
+          const newPath = generatePath(ROUTES.USER.COLLECTION_CATEGORY, {
+            category: "sportjacket",
+          });
+          navigate(newPath, { state: 8 });
+        }}
+      >
+        Mua ngay
+      </S.LinkBtnSmaillScreen>
 
       <S.VideoWrapper>
         <S.Video

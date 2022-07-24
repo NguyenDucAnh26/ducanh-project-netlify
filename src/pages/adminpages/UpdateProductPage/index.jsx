@@ -118,6 +118,7 @@ function UpdateProductPage() {
               label="Price"
             >
               <InputNumber
+                min={1}
                 placeholder=" product price..."
                 prefix="đ"
                 style={{

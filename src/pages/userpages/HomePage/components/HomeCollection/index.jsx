@@ -20,14 +20,7 @@ function HomeCollection() {
     return categoryList.data.map((item) => {
       if (item.url) {
         return (
-          <Col
-            key={item.id}
-            style={{}}
-            className="gutter-row"
-            lg={4}
-            sm={12}
-            xs={12}
-          >
+          <Col key={item.id} className="gutter-row" lg={4} sm={8} xs={12}>
             <div
               style={{ cursor: "pointer" }}
               onClick={() => {

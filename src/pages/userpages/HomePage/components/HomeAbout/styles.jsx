@@ -14,10 +14,10 @@ export const AboutWrapper = styled.div`
 export const AboutCard = styled.div`
   display: flex;
   background-color: #f9f86c;
-  border-radius: 50px;
+  border-radius: 8px;
 `;
 export const AboutCardImageWrapper = styled.div`
-  border-radius: 50px;
+  border-radius: 8px;
   overflow: hidden;
   width: 720px;
   position: relative;
@@ -57,7 +57,7 @@ export const CardContentBtn = styled.a`
   justify-content: center;
   align-items: center;
   height: 40px;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 0 30px;
   transition: all 0.2s;
   cursor: pointer;

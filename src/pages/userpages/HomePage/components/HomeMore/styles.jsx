@@ -11,7 +11,7 @@ export const HomePageMoreCaption = styled.div`
   align-items: center;
   position: relative;
   background-color: #000;
-  border-radius: 24px;
+  border-radius: 8px;
   color: #fff;
   font-size: 24px;
   height: 65px;
@@ -20,7 +20,6 @@ export const HomePageMoreCaption = styled.div`
   @media (max-width: 990px) {
     font-size: 13px;
     height: 40px;
-    border-radius: 12px;
     margin-bottom: 5px;
   }
 `;
@@ -35,20 +34,17 @@ export const LinkCaption = styled.a`
   background-color: #2f5acf;
   color: #fff;
   font-weight: 500;
-  border-radius: 24px;
+  border-radius: 8px;
   padding: 0 35px;
   font-weight: 400;
   &:hover {
     color: #000;
   }
-  @media (max-width: 990px) {
-    border-radius: 12px;
-  }
 `;
 export const HomePageMoreImages = styled.div``;
 
 export const ImageContainer = styled.div`
-  border-radius: 20px;
+  border-radius: 8px;
   overflow: hidden;
 `;
 export const Image = styled.img`

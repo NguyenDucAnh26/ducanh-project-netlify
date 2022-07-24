@@ -136,7 +136,7 @@ function ProductsPage() {
               style={{
                 borderRadius: "5px",
                 backgroundColor: "white",
-                borderColor: "black",
+                borderColor: "#e7dbce",
               }}
               type="primary"
             >
@@ -145,7 +145,6 @@ function ProductsPage() {
                   color: "black",
                 }}
               >
-                {" "}
                 Detail
               </span>
             </Button>
@@ -158,7 +157,7 @@ function ProductsPage() {
               size="small"
               style={{
                 borderRadius: "5px",
-                backgroundColor: "#121212",
+                backgroundColor: "#e7dbce",
                 borderColor: "white",
               }}
             >
@@ -184,7 +183,7 @@ function ProductsPage() {
                 size="small"
                 style={{
                   borderRadius: "5px",
-                  backgroundColor: "#121212",
+                  backgroundColor: "#e7dbce",
                   borderColor: "white",
                 }}
               >
@@ -219,13 +218,14 @@ function ProductsPage() {
           <S.CardFilter>
             <S.CardContent>
               <Input
-                size="small"
+                className="input-admin"
                 onChange={(e) => handleSearh(e.target.value)}
                 placeholder="Tìm kiếm"
               />
             </S.CardContent>
             <S.CardContent>
               <Select
+                className="border-none"
                 size="small"
                 mode="multiple"
                 allowClear

@@ -28,12 +28,12 @@ function AdminLayout() {
         />
         <Layout
           style={{
-            background: "#fafafa",
+            background: "#fff",
           }}
         >
           <Header
             style={{
-              background: "#fff",
+              background: "#e7dbce",
             }}
           >
             <SiteHeader />
@@ -44,7 +44,7 @@ function AdminLayout() {
           <Footer
             style={{
               textAlign: "center",
-              background: "#fafafa",
+              background: "#fff",
             }}
           ></Footer>
         </Layout>

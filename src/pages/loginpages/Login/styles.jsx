@@ -10,7 +10,7 @@ export const LoginContainer = styled.div`
   transform: translateX(-50%);
   background-color: black;
   opacity: 0.85;
-  border-radius: 20px;
+  border-radius: 8px;
 `;
 export const Inside = styled.div`
   color: white;
