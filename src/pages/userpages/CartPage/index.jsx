@@ -176,7 +176,6 @@ function CartPage() {
         },
       })
     );
-    window.location.reload();
   }
 
   const renderProvince = province.map((item) => {

@@ -230,7 +230,6 @@ function Header({
                       onClick={() => {
                         dispatch(logoutAction());
                         navigate(ROUTES.USER.HOME);
-                        window.location.reload();
                       }}
                     >
                       <PoweroffOutlined style={{ marginRight: "6px" }} />

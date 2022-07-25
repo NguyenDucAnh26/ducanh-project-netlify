@@ -17,7 +17,6 @@ function AccountOrders() {
   const { userInfo } = useSelector((state) => state.user);
   const confirm = (deleteId) => {
     dispatch(deleteOrderAction({ id: deleteId }));
-    window.location.reload();
   };
 
   const dispatch = useDispatch();
