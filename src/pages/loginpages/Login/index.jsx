@@ -42,11 +42,7 @@ function Login() {
         callback: {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
           goToHome: () => {
-            navigate(ROUTES.LOGIN, {
-              state: {
-                prevPath: pathname,
-              },
-            });
+            navigate(pathname || ROUTES.USER.HOME);
           },
         },
       })
