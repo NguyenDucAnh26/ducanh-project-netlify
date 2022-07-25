@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as S from "./styles";
-import { Typography, Divider, Tag, Popconfirm, message } from "antd";
+import { Typography, Divider, Tag, Popconfirm } from "antd";
 import Card from "antd/lib/card/Card";
 import { getUserListAction, deleteOrderAction } from "../../../redux/actions";
 import axios from "axios";
@@ -17,7 +17,6 @@ function AccountOrders() {
   const { userInfo } = useSelector((state) => state.user);
   const confirm = (deleteId) => {
     dispatch(deleteOrderAction({ id: deleteId }));
-    window.location.reload();
   };
 
   const dispatch = useDispatch();

@@ -12,7 +12,6 @@ const { Title } = Typography;
 function Login() {
   const [loginForm] = Form.useForm();
   const { state } = useLocation();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loginData } = useSelector((state) => state.user);
@@ -42,7 +41,7 @@ function Login() {
         callback: {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
           goToHome: () => {
-           navigate(state ? state.prevPath : ROUTES.USER.HOME);
+            navigate(state ? state.prevPath : ROUTES.USER.HOME);
             window.location.reload();
           },
         },

@@ -8,7 +8,6 @@ import CartProductCard from "./CartProductCard";
 import TicketSale from "./TicketSale";
 import {
   ConfigProvider,
-  Typography,
   Form,
   Input,
   Select,
@@ -156,26 +155,34 @@ function CartPage() {
       description: "Cảm ơn đã mua hàng của chúng tôi",
     });
 
-    const SaleHaveUse =
-      saleId && userInfo.data.sales.find((item) => item.id === saleId);
+    if (saleId) {
+      const SaleHaveUse = userInfo.data.sales.find(
+        (item) => item.id === saleId
+      );
 
-    const SaleHaveUseDecreaseAmount = {
-      ...SaleHaveUse,
-      amount: SaleHaveUse.amount - 1,
-    };
-    const SalesNotHaveUse =
-      saleId && userInfo.data.sales.filter((item) => item.id !== saleId);
+      const SaleHaveUseDecreaseAmount = {
+        ...SaleHaveUse,
+        amount: SaleHaveUse.amount - 1,
+      };
+      const SalesNotHaveUse = userInfo.data.sales.filter(
+        (item) => item.id !== saleId
+      );
 
-    const newSales = saleId && [...SalesNotHaveUse, SaleHaveUseDecreaseAmount];
+      const newSales = saleId && [
+        ...SalesNotHaveUse,
+        SaleHaveUseDecreaseAmount,
+      ];
 
-    dispatch(
-      updateUserInfoAction({
-        id: userInfo.data.id,
-        data: {
-          sales: newSales,
-        },
-      })
-    );
+      dispatch(
+        updateUserInfoAction({
+          id: userInfo.data.id,
+          data: {
+            sales: newSales,
+          },
+        })
+      );
+    }
+
     window.location.reload();
   }
 
