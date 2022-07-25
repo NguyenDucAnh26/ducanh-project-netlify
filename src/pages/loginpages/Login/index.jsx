@@ -47,6 +47,7 @@ function Login() {
                 prevPath: pathname,
               },
             });
+            window.location.reload();
           },
         },
       })
