@@ -11,7 +11,7 @@ import { ROUTES } from "../../../constants/routes";
 const { Title } = Typography;
 function Login() {
   const [loginForm] = Form.useForm();
-  const { pathname } = useLocation();
+  const { state } = useLocation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
