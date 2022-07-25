@@ -41,9 +41,7 @@ function Login() {
         },
         callback: {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
-          goToHome: () => {
-            navigate(pathname || ROUTES.USER.HOME);
-          },
+          goToHome: () => navigate(state?.prevPath || ROUTES.USER.HOME),
         },
       })
     );
