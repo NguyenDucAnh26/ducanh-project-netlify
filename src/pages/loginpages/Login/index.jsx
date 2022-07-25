@@ -42,7 +42,7 @@ function Login() {
         callback: {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
           goToHome: () => {
-            navigate(state.prevPath || ROUTES.USER.HOME);
+           navigate(state ? state.prevPath : ROUTES.USER.HOME);
             window.location.reload();
           },
         },
