@@ -53,7 +53,7 @@ function Header({
     if (!accessToken) {
       setShowUser(false);
     }
-  }, [showUser]);
+  }, [accessToken]);
 
   window.onclick = function(event) {
     const inputHeader = document.getElementById("inputHeader");
@@ -239,7 +239,6 @@ function Header({
                     <S.UserList
                       onClick={() => {
                         dispatch(logoutAction());
-                        navigate(ROUTES.USER.HOME);
                       }}
                     >
                       <PoweroffOutlined style={{ marginRight: "6px" }} />
