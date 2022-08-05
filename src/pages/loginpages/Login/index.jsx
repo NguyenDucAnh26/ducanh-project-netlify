@@ -42,7 +42,6 @@ function Login() {
           goToDashboard: () => navigate(ROUTES.ADMIN.DASHBOARD),
           goToHome: () => {
             navigate(state ? state.prevPath : ROUTES.USER.HOME);
-            window.location.reload();
           },
         },
       })

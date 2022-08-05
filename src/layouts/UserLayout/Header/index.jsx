@@ -211,7 +211,7 @@ function Header({
                   pointerEvents: "none",
                 }}
               />
-              {accessToken ? (
+              {accessToken && (
                 <S.UserMenu showUserInfo={showUserInfo}>
                   <S.UserLists>
                     <S.UserList
@@ -230,7 +230,6 @@ function Header({
                       onClick={() => {
                         dispatch(logoutAction());
                         navigate(ROUTES.USER.HOME);
-                        window.location.reload();
                       }}
                     >
                       <PoweroffOutlined style={{ marginRight: "6px" }} />
@@ -238,7 +237,7 @@ function Header({
                     </S.UserList>
                   </S.UserLists>
                 </S.UserMenu>
-              ) : null}
+              )}
             </S.UserIcon>
             <Cart />
           </S.Icons>
