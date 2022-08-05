@@ -47,6 +47,7 @@ function Header({
   }, []);
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setShowUser(true);
     }
@@ -239,6 +240,7 @@ function Header({
                     <S.UserList
                       onClick={() => {
                         dispatch(logoutAction());
+                        setShowUser(false);
                       }}
                     >
                       <PoweroffOutlined style={{ marginRight: "6px" }} />
