@@ -35,6 +35,7 @@ function Header({
   const [showHeader, setShowHeader] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
+  const [showUser, setShowUser] = useState(false);
   const [showSearchProduct, setShowSearchProduct] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [showProductSearchMobile, setShowProductSearchMobile] = useState(false);
@@ -44,6 +45,15 @@ function Header({
   useEffect(() => {
     getProductListAction({ limit: 0 });
   }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      setShowUser(true);
+    }
+    if (!accessToken) {
+      setShowUser(false);
+    }
+  }, [showUser]);
 
   window.onclick = function(event) {
     const inputHeader = document.getElementById("inputHeader");
@@ -85,7 +95,7 @@ function Header({
     );
   }
   function handleClickUser() {
-    if (!accessToken) {
+    if (!showUser) {
       navigate(ROUTES.LOGIN);
     }
   }
@@ -211,7 +221,7 @@ function Header({
                   pointerEvents: "none",
                 }}
               />
-              {accessToken ? (
+              {showUser && (
                 <S.UserMenu showUserInfo={showUserInfo}>
                   <S.UserLists>
                     <S.UserList
@@ -230,7 +240,6 @@ function Header({
                       onClick={() => {
                         dispatch(logoutAction());
                         navigate(ROUTES.USER.HOME);
-                        window.location.reload();
                       }}
                     >
                       <PoweroffOutlined style={{ marginRight: "6px" }} />
@@ -238,7 +247,7 @@ function Header({
                     </S.UserList>
                   </S.UserLists>
                 </S.UserMenu>
-              ) : null}
+              )}
             </S.UserIcon>
             <Cart />
           </S.Icons>
