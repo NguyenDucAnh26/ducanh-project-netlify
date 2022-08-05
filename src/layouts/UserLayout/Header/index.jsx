@@ -33,18 +33,22 @@ function Header({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showHeader, setShowHeader] = useState(false);
+  const [showUser, setShowUser] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
   const [showSearchProduct, setShowSearchProduct] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [showProductSearchMobile, setShowProductSearchMobile] = useState(false);
-
   const searchIcon = document.getElementById("searchIcon");
-
   useEffect(() => {
     getProductListAction({ limit: 0 });
   }, []);
-
+  if (accessToken) {
+    setShowUser(true);
+  }
+  if (!accessToken) {
+    setShowUser(false);
+  }
   window.onclick = function(event) {
     const inputHeader = document.getElementById("inputHeader");
     if (event.target === searchIcon) {
@@ -85,7 +89,7 @@ function Header({
     );
   }
   function handleClickUser() {
-    if (!accessToken) {
+    if (showUser === false) {
       navigate(ROUTES.LOGIN);
     }
   }
@@ -211,7 +215,7 @@ function Header({
                   pointerEvents: "none",
                 }}
               />
-              {accessToken && (
+              {showUser && (
                 <S.UserMenu showUserInfo={showUserInfo}>
                   <S.UserLists>
                     <S.UserList
